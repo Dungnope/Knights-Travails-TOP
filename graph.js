@@ -14,7 +14,7 @@ Queue.prototype.isEmpty = function() {
 
 /*
  * Performs a breadth-first search on a graph
- * @param {array} graph - Graph, represented as adjacency lists.
+ * @param {array is possible path} graph - Graph, represented as adjacency lists.
  * @param {number} source - The index of the source vertex.
  * @returns {array} Array of objects describing each vertex, like
  *     [{distance: _, predecessor: _ }]
@@ -117,6 +117,7 @@ function knightMoves(start, end){
                 }
             }   
         }
+
         //get steps of all steps after start step
         for(let step of knightWalk(neighbor)){
             wait.enqueue(step);
@@ -131,5 +132,5 @@ function printAns(knightTravails){
 })
 }
 
-let testMove = knightMoves([3, 3], [7, 7]);
-printAns(testMove);
+// let testMove = knightMoves([4, 3], [3, 3]);
+// printAns(testMove);
