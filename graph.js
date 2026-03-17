@@ -19,7 +19,7 @@ Queue.prototype.isEmpty = function() {
  * @returns {array} Array of objects describing each vertex, like
  *     [{distance: _, predecessor: _ }]
  */
-let knightWalk = function(start){ //get all possible path
+let knightWalk = function(position){ //get all possible path
     let listPath = [];
     const possiblePast = [
         [2, 1],
@@ -34,8 +34,8 @@ let knightWalk = function(start){ //get all possible path
 
     //take all possible path
     for(let i = 0; i < possiblePast.length; i++){
-        let moveX = start[0] + possiblePast[i][0];
-        let moveY = start[1] + possiblePast[i][1];
+        let moveX = position[0] + possiblePast[i][0];
+        let moveY = position[1] + possiblePast[i][1];
         if(moveX < 8 && moveX >= 0 && moveY < 8 && moveY >= 0){
                 listPath.push([moveX, moveY]);
         }
@@ -46,24 +46,29 @@ let knightWalk = function(start){ //get all possible path
 }
 
 function knightMoves(start, end){
-    
-    let shortestPath = [];
     let steps = 0;
+    let shortestPath = [];
+    
+    if(start[0] === end[0] && start[1] === end[1]) return {distance: `You made it in ${steps} moves!  Here's your path:`, path: [start]};
+
 
     //this function take the end position and find the oldest predecessor, return steps and [..., x, y pos] from start to end shortest path
-    function getStepPosition(moveStep, start, result){
+    function getStepPosition(moveStep, start, previousNode){
 
         //take the distance of the end point on board and assign as step number for shortest path
         if(steps === 0)
         {
-            steps = result.distance;
+            steps = previousNode.distance;
         }
 
+        //push travailed position from end to start
+        shortestPath.push(previousNode.predecessor);
+
         //take the predecessor step and then recursive
-        let endStep = moveStep.get(`[${result.predecessor[0]}, ${result.predecessor[1]}]`);
+        previousNode = moveStep.get(`[${previousNode.predecessor[0]}, ${previousNode.predecessor[1]}]`);
 
         //if find the start point return answer
-        if(result.predecessor === start) {
+        if(previousNode.predecessor === start) {
             shortestPath.push(start);
 
             //reverse from start point end point on board
@@ -71,9 +76,8 @@ function knightMoves(start, end){
             return {distance: `You made it in ${steps} moves!  Here's your path:`, path: shortestPath};
         }
         
-        //push travailed position from end to start
-        shortestPath.push(result.predecessor);
-        return getStepPosition(moveStep, start, endStep);
+
+        return getStepPosition(moveStep, start, previousNode);
     }
 
     //queue for step process BFS
@@ -102,7 +106,7 @@ function knightMoves(start, end){
         //bring all step to the queue
         for(let item of allStep){
             if(!moveStep.has(`[${item[0]}, ${item[1]}]`))
-            { 
+            {
                 moveStep.set(`[${item[0]}, ${item[1]}]`, {predecessor: move, distance: moveStep.get(src).distance + 1});
                 wait.enqueue(item);
 
@@ -131,3 +135,6 @@ function printAns(knightTravails){
     console.log(item);
 })
 }
+
+
+printAns(knightMoves([4, 3], [4, 3]));
