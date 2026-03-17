@@ -131,6 +131,3 @@ function printAns(knightTravails){
     console.log(item);
 })
 }
-
-// let testMove = knightMoves([4, 3], [3, 3]);
-// printAns(testMove);
