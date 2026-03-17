@@ -50,7 +50,7 @@ function knightMoves(start, end){
     let shortestPath = [];
     let steps = 0;
 
-    //this function take the end position and find the oldest predecessor
+    //this function take the end position and find the oldest predecessor, return steps and [..., x, y pos] from start to end shortest path
     function getStepPosition(moveStep, start, result){
 
         //take the distance of the end point on board and assign as step number for shortest path
@@ -68,7 +68,7 @@ function knightMoves(start, end){
 
             //reverse from start point end point on board
             shortestPath.reverse();
-            return {distance: steps, path: shortestPath};
+            return {distance: `You made it in ${steps} moves!  Here's your path:`, path: shortestPath};
         }
         
         //push travailed position from end to start
@@ -122,8 +122,14 @@ function knightMoves(start, end){
             wait.enqueue(step);
         }
     }
-
 }
 
+function printAns(knightTravails){
+    console.log(knightTravails.distance);
+    knightTravails.path.forEach((item) => {
+    console.log(item);
+})
+}
 
-console.log(knightMoves([3,3], [0, 0]));
+let testMove = knightMoves([3, 3], [7, 7]);
+printAns(testMove);
